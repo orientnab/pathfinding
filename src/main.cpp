@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[]) {
   // Read flags
+  read_flags(argc, argv);
 
   // Read map
 
