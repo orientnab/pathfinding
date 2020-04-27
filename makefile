@@ -5,6 +5,7 @@ EXE = pathFinding
 SRCDIR = ./src
 
 SRCS = main.cpp \
+			 algo_dijkstra.cpp\
 			 read_flags.cpp
 
 OBJS = $(SRCS:.cpp=.o)

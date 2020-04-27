@@ -1,68 +1,67 @@
 #include <algorithm>
+#include <iostream>
 #include <limits>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
-// #include "algo_dijkstra.hpp"
-
-int MAX_INT = std::numeric_limits<int>::max();
-
-struct Node {
-  int id;
-  std::vector<Node *> neighbours;
-
-  bool operator==(const Node &p) const {
-    return id == p.id;
-  }
-};
-struct hash_fn {
-  std::size_t operator() (const Node &node) const {
-    return std::hash<int>()(node.id);
-  }
-};
-typedef std::unordered_set<Node, hash_fn> Graph;
+#include "algo_dijkstra.hpp"
 
 // Dijkstra's Algorithm
 // Naive implementation: <https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm>
-void dijkstra(const Graph graph, const Node start, const Node target) {
-  Graph Q = graph;
-  std::unordered_map<Node, int, hash_fn> dist;
-  std::unordered_map<Node, Node *, hash_fn> prev;
+void dijkstra(const Graph & graph, const Node & start, const Node & target) {
+
+  int MAX_INT = std::numeric_limits<int>::max();
+  int UNDEF = -1;
+
+  std::unordered_set<int> Q;
+  Q.reserve(graph.size());
+  std::unordered_map<int, int> dist;
+  std::unordered_map<int, int> prev;
   dist.reserve(Q.size());
   prev.reserve(Q.size());
-  for (auto node : Q) {
-    dist[node] = MAX_INT;
-    prev[node] = nullptr;
+  for (auto node : graph) {
+    if (node.first != node.second.id)
+      std::cout << "Graph Formatting Error" << std::endl;
+    Q.insert(node.first);
+    dist[node.first] = MAX_INT;
+    prev[node.first] = UNDEF;
   }
-  dist[start] = 0;
+  dist[start.id] = 0;
 
   while (!Q.empty()) {
-    auto u_pair = std::min_element(dist.begin(), dist.end(),
-      [](const auto & n1, const auto & n2) {
-        return n1.second < n2.second;
-    });
-    Node u = u_pair->first;
-    Q.erase(u);
-    for (auto neighbour : u.neighbours) {
-      if (Q.count(*neighbour)==1) {
-        int alt = dist[u] + 1; // distance from u to its neighbours is 1
-        if (alt < dist[*neighbour]) {
-          dist[*neighbour] = alt;
-          prev[*neighbour] = &u;
+    int u_id = *Q.begin();
+    for (auto v : Q) {
+      if (dist[v] < dist[u_id])
+        u_id = v;
+    }
+    Q.erase(u_id);
+    for (int neighbour_id : graph.at(u_id).neighbours) {
+      if (Q.count(neighbour_id)==1) {
+        int alt = dist[u_id] + 1; // distance from u to its neighbours is 1
+        if (alt < dist[neighbour_id]) {
+          dist[neighbour_id] = alt;
+          prev[neighbour_id] = u_id;
         }
       }
     }
   }
 
-  std::vector<Node *> sequence;
-  Node u = target;
-  if (prev[u] || u == start) {
-    do {
-      sequence.push_back(&u);
-      u = *prev[u];
-    } while (prev[u]);
+  std::vector<int> sequence;
+  int u_id = target.id;
+  if (prev[u_id] == UNDEF) {
+    std::cout << "Target cannot be reached" << std::endl;
   }
+  do {
+    sequence.push_back(u_id);
+    u_id = prev[u_id];
+  } while (u_id != UNDEF);
+  if (u_id != start.id) {
+    std::cout << "Target cannot be reached" << std::endl;
+  }
+
+  for (auto x : sequence)
+    std::cout << x << std::endl;
 }
 
 
