@@ -2,20 +2,40 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
-void read_map(std::string filename) {
-  parse_file(filename);
+void parse_file(const std::string& filename,
+                std::vector<std::vector<char>> & map_representation);
+void build_graph();
+
+void read_map(const std::string & filename) {
+  std::cout << filename << std::endl;
+  std::vector<std::vector<char>> map_representation;
+  parse_file(filename, map_representation);
+  // for (auto v : map_representation) {
+  //   for (auto c : v) {
+  //     std::cout << c;
+  //   }
+  //   std::cout << std::endl;
+  // }
   build_graph();
 }
 
-void parse_file(std::string filename) {
+void parse_file(const std::string& filename,
+                std::vector<std::vector<char>> & map_representation) {
   std::fstream mapFile;
-  mapFile.open("tpoint.txt",std::ios::in); //open a file to perform read operation using file object
-  if (mapFile.is_open()) {  //checking whether the file is open
-    std::string tp;
-    while(getline(mapFile, tp)) { //read data from file object and put it into string.
-      std::cout << tp << "\n"; //print the data of the string
+  mapFile.open(filename, std::ios::in);
+  if (mapFile.is_open()) {
+    std::string line;
+    for (int i = 0; getline(mapFile, line); ++i) {
+      map_representation.push_back(std::vector<char>());
+      for (auto c : line) {
+        map_representation[i].push_back(c);
+      }
     }
-    mapFile.close(); //close the file object.
+    mapFile.close();
   }
+}
+
+void build_graph() {
 }
