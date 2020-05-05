@@ -22,7 +22,8 @@ TESTSRCS = readAsciiMap.cpp \
 
 # Compiler
 CC     = g++
-CFLAGS = -std=c++17 -Wall -Werror -Wextra
+# CFLAGS = -std=c++17 -Wall -Werror -Wextra
+CFLAGS = -std=c++17 -Wall -Wextra
 LFLAGS = -L/usr/include/boost
 LFLAGS += -lboost_program_options
 TFLAGS = -lgtest
