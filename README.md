@@ -5,6 +5,6 @@ C++ implementation of some pathfinding algorithms
 
 	pathFinding [--algorithm=<algorithm>] [--output=<file>] FILE\nOptions;
 
-### Algorithms
+## Algorithms
 - Dijkstra
 
