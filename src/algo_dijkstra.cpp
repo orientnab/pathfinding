@@ -6,10 +6,11 @@
 #include <vector>
 
 #include "algo_dijkstra.hpp"
+#include "graph.hpp"
 
 // Dijkstra's Algorithm
 // Naive implementation: <https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm>
-void dijkstra(const Graph & graph, const Node & start, const Node & target) {
+void dijkstra(const Graph & graph, const int startId, const int targetId) {
 
   int MAX_INT = std::numeric_limits<int>::max();
   int UNDEF = -1;
@@ -27,7 +28,7 @@ void dijkstra(const Graph & graph, const Node & start, const Node & target) {
     dist[node.first] = MAX_INT;
     prev[node.first] = UNDEF;
   }
-  dist[start.id] = 0;
+  dist[startId] = 0;
 
   while (!Q.empty()) {
     int u_id = *Q.begin();
@@ -48,7 +49,7 @@ void dijkstra(const Graph & graph, const Node & start, const Node & target) {
   }
 
   std::vector<int> sequence;
-  int u_id = target.id;
+  int u_id = targetId;
   if (prev[u_id] == UNDEF) {
     std::cout << "Target cannot be reached" << std::endl;
   }
@@ -56,9 +57,6 @@ void dijkstra(const Graph & graph, const Node & start, const Node & target) {
     sequence.push_back(u_id);
     u_id = prev[u_id];
   } while (u_id != UNDEF);
-  if (u_id != start.id) {
-    std::cout << "Target cannot be reached" << std::endl;
-  }
 
   for (auto x : sequence)
     std::cout << x << std::endl;
