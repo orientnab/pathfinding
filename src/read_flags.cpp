@@ -62,6 +62,8 @@ int read_flags(programInput & input, int argc, char *argv[]) {
       return 1;
     }
 
+    input.inputFile = vm["input"].as<std::string>();
+
     if (vm.count("output")) {
       input.outputFile = vm["output"].as<std::string>();
       input.output_to_stdout = false;
