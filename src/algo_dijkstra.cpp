@@ -48,18 +48,18 @@ void dijkstra(const Graph & graph, const int startId, const int targetId) {
     }
   }
 
-  std::vector<int> sequence;
   int u_id = targetId;
-  if (prev[u_id] == UNDEF) {
-    std::cout << "Target cannot be reached" << std::endl;
-  }
-  do {
-    sequence.push_back(u_id);
+  std::vector<int> sequence = {u_id};
+  while (prev[u_id] != UNDEF) {
     u_id = prev[u_id];
-  } while (u_id != UNDEF);
-
-  for (auto x : sequence)
-    std::cout << x << std::endl;
+    sequence.push_back(u_id);
+  }
+  if (u_id != startId) {
+    std::cout << "Target cannot be reached" << std::endl;
+  } else {
+    for (auto x : sequence)
+      std::cout << x << std::endl;
+  }
 }
 
 
